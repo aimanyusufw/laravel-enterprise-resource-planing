@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('status')->default('Open')->comment('e.g., Open, In Progress, Closed, Escalated');
             $table->foreignId('assigned_to_user_id')->nullable()->constrained('users');
             $table->text('resolution_details')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

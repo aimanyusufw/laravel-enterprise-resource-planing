@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('checked_by_user_id')->constrained('users');
             $table->string('result')->comment('e.g., Passed, Failed, Hold');
             $table->text('notes')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

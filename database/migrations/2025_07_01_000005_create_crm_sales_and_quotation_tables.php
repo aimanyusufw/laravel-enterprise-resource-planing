@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status')->default('Pending')->comment('e.g., Pending, Approved, Shipped, Completed');
             $table->decimal('total_amount', 15, 2)->nullable();
             $table->foreignId('user_id')->constrained('users'); // Sales person who created the order
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_price', 15, 2);
             $table->decimal('line_total', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -39,6 +41,7 @@ return new class extends Migration
             $table->string('status')->default('Draft')->comment('e.g., Draft, Submitted, Approved, Rejected');
             $table->decimal('total_amount', 15, 2)->nullable();
             $table->foreignId('user_id')->constrained('users'); // User who created the quotation
+            $table->softDeletes();
             $table->timestamps();
         });
     }

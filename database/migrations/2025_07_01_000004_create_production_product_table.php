@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('stock_on_hand')->default(0);
             $table->integer('min_stock_level')->default(0);
             $table->integer('max_stock_level')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

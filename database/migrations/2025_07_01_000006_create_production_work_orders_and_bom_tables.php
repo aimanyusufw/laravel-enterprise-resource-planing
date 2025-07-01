@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime('end_date')->nullable();
             $table->string('status')->default('Planned')->comment('e.g., Planned, In Progress, Completed, Canceled');
             $table->foreignId('user_id')->constrained('users'); // User responsible for the work order
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products'); // Parent product
             $table->foreignId('component_product_id')->constrained('products'); // Component product
             $table->integer('quantity'); // Quantity of component needed
+            $table->softDeletes();
             $table->timestamps();
         });
     }

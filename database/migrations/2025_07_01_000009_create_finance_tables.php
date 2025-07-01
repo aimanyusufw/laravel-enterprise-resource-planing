@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('due_date')->nullable();
             $table->decimal('total_amount', 15, 2);
             $table->string('status')->default('Unpaid')->comment('e.g., Unpaid, Paid, Overdue');
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 2);
             $table->string('payment_method')->nullable();
             $table->foreignId('user_id')->constrained('users'); // User who recorded the payment
+            $table->softDeletes();
             $table->timestamps();
         });
     }

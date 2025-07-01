@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('transaction_date');
             $table->unsignedBigInteger('reference_document_id')->nullable(); // e.g., GRN ID, Sales Order Item ID
             $table->foreignId('user_id')->constrained('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('status')->default('Pending')->comment('e.g., Pending, Approved, Rejected, Ordered');
             $table->text('notes')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -42,6 +44,7 @@ return new class extends Migration
             $table->string('status')->default('Draft')->comment('e.g., Draft, Pending Approval, Approved, Received, Closed');
             $table->decimal('total_amount', 15, 2)->nullable();
             $table->foreignId('user_id')->constrained('users'); // User who created the PO
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -52,6 +55,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_price', 15, 2);
             $table->decimal('line_total', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -61,6 +65,7 @@ return new class extends Migration
             $table->dateTime('receipt_date');
             $table->foreignId('received_by_user_id')->constrained('users');
             $table->string('status')->comment('e.g., Partial, Complete');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
