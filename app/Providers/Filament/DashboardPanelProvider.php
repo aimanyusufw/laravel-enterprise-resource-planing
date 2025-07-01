@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Providers\Filament\Auth\CustomLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,7 +27,7 @@ class DashboardPanelProvider extends PanelProvider
             ->default()
             ->id('dashboard')
             ->path('')
-            ->login()
+            ->login(CustomLogin::class)
             ->colors([
                 'primary' => Color::Green,
             ])
