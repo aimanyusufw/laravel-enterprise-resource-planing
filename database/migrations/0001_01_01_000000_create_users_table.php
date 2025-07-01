@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('email')->unique()->nullable();
             $table->string('role')->comment('e.g., Admin, Sales, Production, Finance');
+            $table->rememberToken();
             $table->timestamps();
         });
 
