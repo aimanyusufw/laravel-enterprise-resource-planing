@@ -101,6 +101,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('username')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->placeholder("Email is empty")
                     ->searchable(),
                 Tables\Columns\BadgeColumn::make('roles.name')
                     ->default("User has no role")
@@ -135,7 +136,7 @@ class UserResource extends Resource
             ->bulkActions([
                 //
             ])
-            ->defaultSort('created_at', 'desc');;
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getEloquentQuery(): Builder
