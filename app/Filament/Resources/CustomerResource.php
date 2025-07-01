@@ -110,7 +110,7 @@ class CustomerResource extends Resource
             ->emptyStateDescription('Create new customer data here.')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create user')
+                    ->label('Create supplier')
                     ->url(CustomerResource::getUrl('create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -124,7 +124,7 @@ class CustomerResource extends Resource
             ->bulkActions([
                 //
             ])
-            ->defaultSort('created_at', 'desc');;
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getEloquentQuery(): Builder
