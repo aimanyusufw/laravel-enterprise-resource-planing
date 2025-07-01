@@ -9,40 +9,71 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'email',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relationships
+    public function salesOrders()
+    {
+        return $this->hasMany(SalesOrder::class, 'user_id');
+    }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'user_id');
+    }
+
+    public function purchaseOrders()
+    {
+        return $this->hasMany(PurchaseOrder::class, 'user_id');
+    }
+
+    public function goodsReceiptNotes()
+    {
+        return $this->hasMany(GoodsReceiptNote::class, 'received_by_user_id');
+    }
+
+    public function workOrders()
+    {
+        return $this->hasMany(WorkOrder::class, 'user_id');
+    }
+
+    public function inventoryTransactions()
+    {
+        return $this->hasMany(InventoryTransaction::class, 'user_id');
+    }
+
+    public function qualityControlChecks()
+    {
+        return $this->hasMany(QualityControlCheck::class, 'checked_by_user_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'user_id');
+    }
+
+    public function serviceTickets()
+    {
+        return $this->hasMany(ServiceTicket::class, 'assigned_to_user_id');
     }
 }
