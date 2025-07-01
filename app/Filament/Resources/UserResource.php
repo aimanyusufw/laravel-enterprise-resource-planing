@@ -42,12 +42,12 @@ class UserResource extends Resource
                         ->autocomplete(false)
                         ->maxLength(20),
                     Forms\Components\TextInput::make('email')
+                        ->unique()
+                        ->placeholder("example@email.com")
+                        ->helperText('Input must valid email')
+                        ->email()
                         ->autocomplete(false)
                         ->columnSpanFull()
-                        ->columnSpanFull()
-                        ->placeholder("example@email.com")
-                        ->helperText('Use lowercase letters, numbers, and underscores without spaces.')
-                        ->email()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('password')
                         ->password()
@@ -127,7 +127,7 @@ class UserResource extends Resource
                     ->button(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -136,6 +136,14 @@ class UserResource extends Resource
                 //
             ])
             ->defaultSort('created_at', 'desc');;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getRelations(): array
