@@ -40,7 +40,7 @@ class PurchaseOrderResource extends Resource
                     Forms\Components\DatePicker::make('delivery_date')
                         ->helperText("Select the date when the order was delivered."),
                     Forms\Components\Select::make('status')
-                        ->helperText("Set the current status of this qutation. (e.g., Draft, Received, Approved)")
+                        ->helperText("Set the current status of this purchase order. (e.g., Draft, Received, Approved)")
                         ->options([
                             "draft" => "Draft",
                             "pending approval" => "Pending Approval",
@@ -50,7 +50,7 @@ class PurchaseOrderResource extends Resource
                         ])
                         ->required(),
                     Forms\Components\TextInput::make('total_amount')
-                        ->helperText("The total amount of the qutation in USD.")
+                        ->helperText("The total amount of the purchase order in USD.")
                         ->mask(RawJs::make('$money($input)'))
                         ->prefix('$')
                         ->stripCharacters(',')
@@ -105,7 +105,7 @@ class PurchaseOrderResource extends Resource
                 Tables\Columns\TextColumn::make('user_id')
                     ->url(function (PurchaseOrder $record): ?string {
                         if ($record->user_id !== auth()->id() && auth()->user()->can('update_user')) {
-                            return UserResource::getUrl('edit', ['record' => $record->customer_id]);
+                            return UserResource::getUrl('edit', ['record' => $record->user_id]);
                         }
                         return null;
                     })
