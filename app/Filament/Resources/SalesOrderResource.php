@@ -93,6 +93,17 @@ class SalesOrderResource extends Resource
                 Tables\Columns\TextColumn::make('order_date')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('workOrder.status')
+                    ->label("Work Order Status")
+                    ->badge()
+                    ->placeholder("Sales order not done")
+                    ->color(fn(string $state): string => match ($state) {
+                        'planned' => 'warning',
+                        'in progress' => 'info',
+                        'completed' => 'success',
+                        'canceled' => 'danger',
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -104,8 +115,10 @@ class SalesOrderResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
+                    ->prefix("$")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.username')
+                    ->label("Responsible")
                     ->url(function (SalesOrder $record): ?string {
                         if ($record->user_id !== auth()->id() && auth()->user()->can('update_user')) {
                             return UserResource::getUrl('edit', ['record' => $record->customer_id]);
