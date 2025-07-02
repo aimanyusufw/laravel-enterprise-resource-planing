@@ -8,6 +8,7 @@ use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
@@ -44,17 +45,20 @@ class ProductResource extends Resource
                         ->columnSpanFull(),
                     Forms\Components\TextInput::make('standard_cost')
                         ->label('Standard Cost')
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters(',')
                         ->prefix('$')
-                        ->numeric()
                         ->placeholder('e.g. 5.00')
                         ->helperText('Base cost to produce or acquire the product.')
                         ->columnSpan(1),
                     Forms\Components\TextInput::make('selling_price')
                         ->label('Selling Price')
-                        ->prefix('$')
-                        ->numeric()
-                        ->placeholder('e.g. 9.99')
                         ->helperText('Selling price for the end customer.')
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters(',')
+                        ->prefix('$')
+                        ->placeholder("e.g. 120.00")
+                        ->numeric()
                         ->columnSpan(1),
                     Forms\Components\TextInput::make('stock_on_hand')
                         ->label('Stock on Hand')
@@ -109,15 +113,34 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('product_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('selling_price')
+                Tables\Columns\TextColumn::make('standard_cost')
                     ->numeric()
+                    ->placeholder("Standard Cost is empty")
                     ->prefix("$ ")
                     ->sortable(),
-                Tables\Columns\TextColumn::make('stock_on_hand')
+                Tables\Columns\TextColumn::make('selling_price')
                     ->numeric()
+                    ->placeholder("Selling Price is empty")
+                    ->prefix("$ ")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit_of_measure')
-                    ->searchable(),
+                    ->label("Profit margin")
+                    ->formatStateUsing(function (string $state, Product $record): string {
+                        $salePrice = $record->selling_price ?? 0;
+                        $cost = $record->standard_cost ?? 0;
+                        $profit = $salePrice - $cost;
+                        $percent = floor((($salePrice - $cost) / $salePrice) * 100);
+                        return  "{$percent}% / " . "$" . "{$profit}";
+                    })
+                    ->searchable(false),
+                Tables\Columns\TextColumn::make('stock_on_hand')
+                    ->formatStateUsing(function (string $state, Product $record): string {
+                        $stockOnHand = $record->stock_on_hand ?? 0;
+                        $mou = $record->unit_of_measure ?? '';
+                        return "{$stockOnHand} {$mou}";
+                    })
+                    ->sortable(['stock_on_hand', 'unit_of_measure'])
+                    ->searchable(['stock_on_hand', 'unit_of_measure']),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
