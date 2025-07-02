@@ -34,7 +34,7 @@ class QuotationResource extends Resource
                         ->label("Customer")
                         ->helperText("Select the customer who made the purchase.")
                         ->searchable()
-                        ->options(Customer::all()->pluck('customer_name', 'id'))
+                        ->relationship("customer", "customer_name")
                         ->required(),
                     Forms\Components\DatePicker::make('quotation_date')
                         ->helperText("Select the date when the qutation was placed.")
