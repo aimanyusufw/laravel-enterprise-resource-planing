@@ -33,7 +33,7 @@ class SalesOrderResource extends Resource
                         ->label("Customer")
                         ->helperText("Select the customer who made the purchase.")
                         ->searchable()
-                        ->options(Customer::all()->pluck('customer_name', 'id'))
+                        ->relationship("customer", "customer_name")
                         ->placeholder("Search or select a customer")
                         ->required()
                         ->columnSpan(1),
