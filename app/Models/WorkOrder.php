@@ -23,7 +23,7 @@ class WorkOrder extends Model
     // Relationships
     public function salesOrder()
     {
-        return $this->belongsTo(SalesOrder::class);
+        return $this->belongsTo(SalesOrder::class)->with('customer');
     }
 
     public function product()
