@@ -11,28 +11,36 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser, HasName
+class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes, LogsActivity;
 
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
     }
 
-    public function getFilamentName(): string
-    {
-        return $this->username;
-    }
-
     protected $fillable = [
-        'username',
+        'name',
         'password',
         'email',
         'role',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'username',
+                'password',
+                'email',
+                'role',
+            ]);
+    }
 
     protected $hidden = [
         'password',

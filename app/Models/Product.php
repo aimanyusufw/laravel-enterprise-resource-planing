@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'product_name',
@@ -20,6 +22,21 @@ class Product extends Model
         'min_stock_level',
         'max_stock_level'
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'product_name',
+                'description',
+                'unit_of_measure',
+                'standard_cost',
+                'selling_price',
+                'stock_on_hand',
+                'min_stock_level',
+                'max_stock_level'
+            ]);
+    }
 
     // Relationships
     public function salesOrderItems()
