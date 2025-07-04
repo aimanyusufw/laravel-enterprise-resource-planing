@@ -29,6 +29,12 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make([
+                    Forms\Components\TextInput::make('name')
+                        ->placeholder("Jhon Doe")
+                        ->required()
+                        ->helperText('Input must valid name')
+                        ->columnSpanFull()
+                        ->maxLength(255),
                     Forms\Components\TextInput::make('username')
                         ->label('Username')
                         ->required()
@@ -98,7 +104,7 @@ class UserResource extends Resource
         return $table
             ->modifyQueryUsing(fn(Builder $query) => $query->where('id', '!=', Auth::id()))
             ->columns([
-                Tables\Columns\TextColumn::make('username')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->placeholder("Email is empty")
