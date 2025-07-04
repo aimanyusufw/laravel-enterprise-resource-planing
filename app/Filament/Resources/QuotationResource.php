@@ -104,6 +104,7 @@ class QuotationResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.username')
+                    ->label("Responsible")
                     ->url(function (Quotation $record): ?string {
                         if ($record->user_id !== auth()->id() && auth()->user()->can('update_user')) {
                             return UserResource::getUrl('edit', ['record' => $record->customer_id]);
