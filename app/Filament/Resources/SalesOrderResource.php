@@ -93,6 +93,16 @@ class SalesOrderResource extends Resource
                 Tables\Columns\TextColumn::make('order_date')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('invoice.status')
+                    ->label("Invoice Status")
+                    ->badge()
+                    ->placeholder("Invoice not done")
+                    ->color(fn(string $state): string => match ($state) {
+                        'unpaid' => 'warning',
+                        'paid' => 'success',
+                        'overdue' => 'danger',
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('workOrder.status')
                     ->label("Work Order Status")
                     ->badge()
