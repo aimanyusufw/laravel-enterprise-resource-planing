@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
+use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class WorkOrderResource extends Resource
 {
@@ -183,6 +184,10 @@ class WorkOrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                ActivityLogTimelineTableAction::make('Activities')
+                    ->withRelations(['roles'])
+                    ->hidden(!auth()->user()->can("view_activitylog"))
+
             ])
             ->bulkActions([
                 //
