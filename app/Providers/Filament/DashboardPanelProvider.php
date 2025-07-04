@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Rmsramos\Activitylog\ActivitylogPlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -55,6 +56,9 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
+                ActivitylogPlugin::make()
+                    ->navigationGroup('Core System')
+                    ->navigationIcon('heroicon-o-document-magnifying-glass'),
             ])
             ->authMiddleware([
                 Authenticate::class,

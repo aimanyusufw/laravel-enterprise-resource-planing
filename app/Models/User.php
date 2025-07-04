@@ -14,6 +14,8 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role as BaseRole;
+use Spatie\Permission\Models\Permission as BasePermission;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -26,6 +28,7 @@ class User extends Authenticatable implements FilamentUser
 
     protected $fillable = [
         'name',
+        'username',
         'password',
         'email',
         'role',
@@ -34,12 +37,7 @@ class User extends Authenticatable implements FilamentUser
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly([
-                'username',
-                'password',
-                'email',
-                'role',
-            ]);
+            ->logAll();
     }
 
     protected $hidden = [
@@ -99,5 +97,31 @@ class User extends Authenticatable implements FilamentUser
     public function serviceTickets()
     {
         return $this->hasMany(ServiceTicket::class, 'assigned_to_user_id');
+    }
+}
+
+class Role extends BaseRole
+{
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+}
+
+class Permission extends BasePermission
+{
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }
